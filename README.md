@@ -1,5 +1,15 @@
 # computer_operating_status
 
+## 背景
+
+研究室内のクラスターごとの稼働率やディスク使用率をWeb上で見れるWebアプリケーションを作った. <br/>
+
+## 使用技術(ライブラリ等）
+
+- d3.js
+- kyotocabinet
+- jQuery
+
 # 各クラスターの稼働率とユーザーの使用率
 <img width="742" alt="1" src="https://user-images.githubusercontent.com/63649819/162664991-c8751afb-223d-4658-a4d7-2d6958e77efd.png">
 
