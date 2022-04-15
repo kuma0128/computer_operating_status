@@ -40,6 +40,12 @@ do
   echo "tset1"
   for j in `seq 0 $nodes`
   do
+    II=${i}00
+    chk2=`/usr/sbin/fping -admq -t 50 -i 10 -r 1 $II`
+    if [ -z "$chk2" ]; then
+      # 親ノードがダウンしているとき
+      break
+    fi
     chk=`/usr/sbin/fping -admq -t 50 -i 10 -r 1 ${ary0[$j]}`
     if [ -z "$chk" ]; then
       # ダウンしているとき
