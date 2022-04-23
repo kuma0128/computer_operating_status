@@ -44,11 +44,13 @@ do
     chk2=`/usr/sbin/fping -admq -t 50 -i 10 -r 1 $II`
     if [ -z "$chk2" ]; then
       # 親ノードがダウンしているとき
+      echo "${j} down"
       break
     fi
     chk=`/usr/sbin/fping -admq -t 50 -i 10 -r 1 ${ary0[$j]}`
     if [ -z "$chk" ]; then
       # ダウンしているとき
+      echo "${j} down"
       continue
     fi
     # loadavrgの計算。直近15分以内の平均負荷。
