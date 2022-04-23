@@ -36,8 +36,8 @@ do
   nodes=`expr $nodes \- 1`
   # 各スレーブノードについてループ
   avrg=0;pbs=0;nnode=1;availsum=0;pbst=0;
-  echo "$i"
-  echo "tset1"
+#  echo "$i"
+#  echo "tset1"
   for j in `seq 0 $nodes`
   do
     II=${i}00
@@ -69,7 +69,7 @@ do
 # TCPポート枯渇対策   1m 
   #  sleep 5s
   done
-  echo "test2"
+#  echo "test2"
   #統計処理
   pbst=$pbs
   totcpu=`expr $totcpu \+ $pbs`
@@ -77,7 +77,7 @@ do
     avrg=`echo "scale=3; $avrg/$availsum*100"|bc`
     pbs=`echo "scale=3; $pbs/$availsum*100"|bc`
   fi
-  echo "test3"
+#  echo "test3"
   if [ -z "$avrg" ]; then
     avrg=0
   fi
@@ -95,7 +95,7 @@ do
   Insertc+="'"$pbst/$availsum"',"
   availcpu=`expr $availcpu \+ $availsum`
 done
-echo "test"
+#echo "test"
 # 全計算機の平均値
 if [ "$clus" -ne 0 ]; then
   tot=`echo "scale=3; $tot/$clus"|bc`
@@ -111,6 +111,6 @@ Insertc+="'"$totcpu/$availcpu"');"
 result=$(mysql -u $user --password=$pass $db -N -e "$Insert")
 result=$(mysql -u $user --password=$pass $db -N -e "$Insertp")
 result=$(mysql -u $user --password=$pass $db -N -e "$Insertc")
-echo "$Insert"
-echo "$Insertp"
-echo "$Insertc"
+#echo "$Insert"
+#echo "$Insertp"
+#echo "$Insertc"
