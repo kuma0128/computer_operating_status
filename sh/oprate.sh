@@ -40,6 +40,8 @@ do
 #  echo "tset1"
   for j in `seq 0 $nodes`
   do
+    # TCPポート枯渇対策   1m 
+    sleep 1m 
     II=${i}00
     chk2=`/usr/sbin/fping -admq -t 50 -i 10 -r 1 $II`
     if [ -z "$chk2" ]; then
@@ -69,8 +71,6 @@ do
       /usr/bin/sshpass -p `openssl rsautl -decrypt -inkey ~/.ssh/id_rsa -in ~/.ssh/password.rsa` ssh root@${ary0[$j]} "/usr/sbin/ypbind 2>/dev/null"
     fi
     wait
-# TCPポート枯渇対策   1m 
-  #  sleep 5s
   done
 #  echo "test2"
   #統計処理
