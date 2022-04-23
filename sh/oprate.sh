@@ -57,6 +57,7 @@ do
     nnode=`expr $nnode \+ 1`
     load=`sudo -u guest /usr/bin/rsh ${ary0[$j]} uptime 2>/dev/null | awk '{print $NF}'`
     if [ -z "$load" ]; then
+      echo "${j} error"
       continue
     fi
     avrg=`echo "sacle=3; $avrg + $load" | bc`
