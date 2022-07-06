@@ -3,12 +3,12 @@
 #1時間に1度実行される。
 #HDDの使用率が90,95,98,99%を超えた場合、各ユーザーの使用率とともにメールで通知する。
 
-user="root"
+user="XXXX"
 pass=`openssl XXXX`
 db="XXXX"
 table="XXXX"
 
-Insert="Insert into $db.$table (cluster,used,avail) values "
+Insert="INSERT INTO $db.$table (cluster,used,avail) VALUES "
 nodearray=(`/opt/pbs/bin/qstat -Q |grep work|awk '{print $1}'|cut -c 6-`)
 nodearray=("${nodearray[@]}" "nagara")
 nodearray=("${nodearray[@]}" "asuka_data")
@@ -38,12 +38,12 @@ do
   Insert+="(\"$i\",$used,$avail),"
 done
 Insert=`echo $Insert|rev|cut -c 2- |rev`
-Insert+=" on duplicate key update cluster = values(cluster), used = values(used),
-         avail = values(avail);"
+Insert+=" ON DUPLICATE KEY UPDATE cluster = VALUES(cluster), used = VALUES(used),
+         avail = VALUES(avail);"
 result=$(mysql -u $user --password=$pass $db -N -e "$Insert")
 for i in "${nodearray[@]}"
 do
-  query="select * from $table where cluster = '$i'"
+  query="SELECT * FROM $table WHERE cluster = '$i'"
   result=$(mysql -u $user --password=$pass $db -N -e "$query")
   declare -a columns=(); declare -a columns=($result)
   tot=`expr ${columns[1]} \+ ${columns[2]}`
@@ -56,17 +56,17 @@ do
     if [ `echo "$rate <= $thres"|bc` == 1 ]; then
       flag=1
     fi
-    query="select mail$j+0 from $table where cluster = '$i'"
+    query="SELECT mail$j+0 FROM $table WHERE cluster = '$i'"
     result=$(mysql -u $user --password=$pass $db -N -e "$query")
     if [ "$flag" -ne "$result" ]; then
       #HDD使用率がしきい値が下回った場合
       if [ "$flag" == "0" ]; then
-        query="update $db.$table set mail$j=$flag where cluster = '$i'"
+        query="UPDATE $db.$table SET mail$j=$flag WHERE cluster = '$i'"
         result=$(mysql -u $user --password=$pass $db -N -e "$query")
       fi
       #HDD使用率がしきい値を上回った場合
       if [ "$flag" == "1" ]; then
-        query="update $db.$table set mail$j=$flag where cluster = '$i'"
+        query="UPDATE $db.$table SET mail$j=$flag WHERE cluster = '$i'"
         result=$(mysql -u $user --password=$pass $db -N -e "$query")
         mailflag=1
       fi
